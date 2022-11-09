@@ -1,8 +1,117 @@
-example:
+compass:
   material: compass
-  slot: 0
+  slot: 8
   meta:
-    name: '&7Example Item'
+    name: '&eUna simple brújula'
+invsee:
+  material: CHEST
+  slot: 7
+  meta:
+    name: '&eVer inventario'
+    lore: |-
+      &7
+      &f Clic derecho en un jugador para
+      &f abrir su inventario.
+      &7
+      &f Clic izquierdo para seleccionar
+      &f jugador.
+      &7
+  actions:
+    leftclick:
+      - '[cmd]staff invsee'
+    rightclick:
+      - '[invsee][cmd=OP]openinv {clicked}'
+    multiclick:
+      - '[sound]UI_BUTTON_CLICK,1.0,2.0'
+rtp:
+  material: ENDER_EYE
+  slot: 0
+  cooldown: 2
+  meta:
+    name: '&eTeleport aleatorio'
+    lore: |-
+      &7
+      &f Solo cliquea y
+      &f disfruta el viaje.
+      &7
   actions:
     multiclick:
-      - '[sound]ENTITY_PLAYER_LEVELUP,1.0,1.0'
+      - '[sound]ENTITY_ENDERMAN_TELEPORT,1.0,2.0'
+      - '[cmd]staff rtp'
+vanish-on:
+  material: lime_candle
+  slot: 2
+  update: true
+  requirements:
+    '1':
+      type: STRING
+      syntax: '%essentials_vanished%'
+      value: 'yes'
+  meta:
+    name: '&eDesactivar invisibilidad'
+    lore: |-
+      &7
+      &f Clic para desactivar 
+      &f tu invisibilidad.
+      &7
+  actions:
+    multiclick:
+      - '[sound]ENTITY_ENDERMAN_TELEPORT,1.0,2.0'
+      - '[cmd=OP]v off'
+      - '[return]'
+vanish-off:
+  material: gray_candle
+  slot: 2
+  update: true
+  requirements:
+    '1':
+      type: STRING
+      syntax: '%essentials_vanished%'
+      value: 'no'
+  meta:
+    name: '&eActivar invisibilidad'
+    lore: |-
+      &7
+      &f Clic para activar 
+      &f tu invisibilidad.
+      &7
+  actions:
+    multiclick:
+      - '[sound]ENTITY_ENDERMAN_TELEPORT,1.0,2.0'
+      - '[cmd=OP]v on'
+      - '[action]removepot invisibility'
+      - '[return]'
+froze:
+  material: PACKED_ICE
+  slot: 1
+  meta:
+    name: '&eCongelar jugador'
+    lore: |-
+      &7
+      &f Clic derecho en un jugador para
+      &f congelarlo su inventario.
+      &7
+      &f Clic izquierdo para seleccionar
+      &f jugador.
+      &7
+  actions:
+    leftclick:
+      - '[cmd]staff froze'
+    rightclick:
+      - '[froze][cmd]staff froze {clicked}'
+    multiclick:
+      - '[sound]UI_BUTTON_CLICK,1.0,2.0'
+staffchat:
+  material: PAPER
+  slot: 6
+  meta:
+    name: '&eChat de staff'
+    lore: |-
+      &7
+      &f Clic para alternar tu
+      &f estado del chat de staff.
+      &7
+  actions:
+    multiclick:
+      - '[cmd]staff chat'
+      - '[sound]UI_BUTTON_CLICK,1.0,2.0'

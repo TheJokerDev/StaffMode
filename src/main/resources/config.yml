@@ -1,3 +1,6 @@
 settings:
-  prefix: '&e&lSpigot&6&lTemplate &8» &7'
+  prefix: ' &e&l» &7'
   debug: false
+
+staff-chat:
+  format: '&b[&eSC&b] &e%survicore_color%%player_displayname% &e&l» &f{message}'

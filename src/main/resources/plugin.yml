@@ -1,7 +1,8 @@
-name: SpigotTemplate
+name: StaffMode
 version: '${version}'
-main: plugin.template.spigot.Main
+main: me.thejokerdev.staffmode.Main
 api-version: 1.19
 depend:
   - PlaceholderAPI
-description: Template for Spigot plugins.
+  - OpenInv
+description: Staff mode plugin.

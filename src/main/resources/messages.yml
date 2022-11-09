@@ -1,17 +1,40 @@
 general:
-  noPermission: '{prefix}&cYou not have permissions to do this.'
-  onlyPlayers: '{prefix}&cThis command is only for players.'
-  onlyConsole: '{prefix}&cThis command can be only executed by console.'
-  commandNotExists: '{prefix}&cThat sub-command does''nt exist!'
+  noPermission: '{prefix}&cTas meco.'
+  onlyPlayers: '{prefix}&cEste comando es solo para jugadores.'
+  onlyConsole: '{prefix}&cTas meco.'
+  commandNotExists: '{prefix}&c¡Ese sub-comando no existe!'
+  cooldown: '{prefix}&cDebes esperar {time} para usar eso de nuevo.'
+  playerNotExists: '{prefix}&cEse jugador no existe o no está conectado.'
+
+messages:
+  staff-chat:
+    'on': '&aON'
+    'off': '&cOFF'
+  staff:
+    need: '{prefix}&cDebes estar en staff mode para hacer eso.'
+  interact:
+    isStaff: '{prefix}&cEse jugador está en modo staff.'
+    opening: '{prefix}Abriendo el inventario de &a{clicked}&7.'
 
 commands:
   main:
-    needArguments: |-
-      {prefix}&cPlease, provide more arguments in the command.
-      &7TIP: Press space after command ant press Tab key to get the suggests.
-    getItem:
-      noItems: '{prefix}&cSorry, but no are registered items in config.'
-      itemNotExists: '{prefix}&cThat item not exists.'
-      success: '{prefix}&aYou''ve received &bx{amount} &e{item}&a.'
+    rtp:
+      success: '{prefix}Te moviste hacia {player}.'
+      noPlayer: '{prefix}&cNo hay jugadores para buscar.'
+    froze:
+      frozen:
+        staff: '{prefix}&bCongelaste a {player}.'
+        player: '{prefix}&cHas sido congelado. Un staff te atenderá de inmediato.'
+      unfrozen:
+        staff: '{prefix}&aDescongelaste a {player}.'
+        player: '{prefix}EngrasameLand &8» &cHas sido descongelado.'
+    toggle:
+      activate: '&aencender'
+      deactivate: '&capagar'
+      msg: '{prefix}Acabas de {status}&7 el staff mode.'
+    staff-chat:
+      activate: '&aencender'
+      deactivate: '&capagar'
+      msg: '{prefix}Acabas de {status}&7 el staff chat.'
     reload:
       success: '{prefix}&aAll configuration files has been reloaded.'

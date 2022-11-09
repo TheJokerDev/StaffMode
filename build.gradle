@@ -5,7 +5,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version ("7.1.2")
 }
 
-group = 'plugin.template'
+group = 'me.thejokerdev'
 version = '1.0'
 
 repositories {
@@ -53,7 +53,7 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 tasks.withType(ShadowJar){
-    relocate("com.cryptomorin.xseries", "plugin.template.spigot.xseries")
+    relocate("com.cryptomorin.xseries", "me.thejokerdev.staffmode.xseries")
 }
 
 processResources {
