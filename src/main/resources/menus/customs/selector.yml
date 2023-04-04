@@ -1,0 +1,61 @@
+settings:
+  rows: 6
+  update: 10 #-1 to disable
+  separator:
+    -
+  title: '&b&lSM&8 » Selecciona a un jugador'
+
+items:
+  player-head:
+    material: player_head
+    skull: "name-%player_name%"
+    slot: 11
+    meta:
+      name: '&e%player_name%'
+    actions:
+      multiclick:
+        - '[close]'
+        - '[action]selector %head%'
+        - '[sound]BLOCK_NOTE_BLOCK_HARP,3.0,1.0'
+  next-page:
+    material: player_head
+    skull: 'base-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDU0MmQwYzc0MjkzODc5NDhjZjk5ZThjYjhjNTU1OWU3MzNmYzdkYmZiMTg0YzJjMGI3ZDllZmQ4MjlmZiJ9fX0='
+    slot: 53
+    meta:
+      name: '&fSiguiente página'
+    actions:
+      multiclick:
+        - '[sound]BLOCK_NOTE_BLOCK_HARP,3.0,1.0'
+  previous-page:
+    material: player_head
+    skull: 'base-eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmU4ZjQyNGUzNjk3YmE0YWViZmU2NzgwNTcxOTczOTU2NWQ1MzY4NjY1YWIyMWFmOWNlMmViZGRkODk0NWM4In19fQ=='
+    slot: 45
+    meta:
+      name: '&fPágina anterior'
+    actions:
+      multiclick:
+        - '[sound]BLOCK_NOTE_BLOCK_HARP,3.0,1.0'
+  no-players:
+    material: barrier
+    slot: 22
+    meta:
+      name: '&cNo hay jugadores'
+      lore: |-
+        &7No hay jugadores en el servidor
+        &7para seleccionar.
+
+extra-items:
+  item:
+    material: book
+    slot: 49
+    meta:
+      name: '&cCerrar inventario'
+    actions:
+      multiclick:
+        - '[close]'
+        - '[sound]BLOCK_NOTE_BLOCK_HARP,3.0,0.5'
+  panel:
+    material: gray_stained_glass_pane
+    slot: 0,1,2,3,4,5,6,7,8,9,17,18,26,27,35,36,44,45,46,47,48,50,51,52,53
+    meta:
+      name: '&f'

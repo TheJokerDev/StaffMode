@@ -9,6 +9,7 @@ import me.thejokerdev.staffmode.Main;
 import me.thejokerdev.staffmode.type.Menu;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -144,6 +145,27 @@ public class Utils {
                 if (s.startsWith("removepot")) {
                     String[] split = s.split(" ");
                     p.removePotionEffect(PotionEffectType.getByName(split[1].toUpperCase()));
+                }
+                if (s.startsWith("survival")){
+                    p.setGameMode(GameMode.SURVIVAL);
+                }
+                if (s.startsWith("creative")){
+                    p.setGameMode(GameMode.CREATIVE);
+                }
+                if (s.startsWith("adventure")){
+                    p.setGameMode(GameMode.ADVENTURE);
+                }
+                if (s.startsWith("spectator")){
+                    p.setGameMode(GameMode.SPECTATOR);
+                }
+                if (s.startsWith("fly")){
+                    if (s.contains("on")){
+                        p.setAllowFlight(true);
+                        p.setFlying(true);
+                    } else {
+                        p.setAllowFlight(false);
+                        p.setFlying(false);
+                    }
                 }
             }
         }

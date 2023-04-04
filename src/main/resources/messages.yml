@@ -7,7 +7,11 @@ general:
   playerNotExists: '{prefix}&cEse jugador no existe o no está conectado.'
 
 messages:
+  staff-tag: '&7[Mod Mode]'
   staff-chat:
+    'on': '&aON'
+    'off': '&cOFF'
+  staff-mode:
     'on': '&aON'
     'off': '&cOFF'
   staff:
@@ -27,7 +31,11 @@ commands:
         player: '{prefix}&cHas sido congelado. Un staff te atenderá de inmediato.'
       unfrozen:
         staff: '{prefix}&aDescongelaste a {player}.'
-        player: '{prefix}EngrasameLand &8» &cHas sido descongelado.'
+        player: '{prefix}&aHas sido descongelado.'
+    vanish:
+      activate: '&aencender'
+      deactivate: '&capagar'
+      msg: '{prefix}Acabas de {status}&7 tu invisibilidad.'
     toggle:
       activate: '&aencender'
       deactivate: '&capagar'

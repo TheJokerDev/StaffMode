@@ -1,5 +1,6 @@
 package me.thejokerdev.staffmode.commands.sub.staffmode;
 
+import com.cryptomorin.xseries.XSound;
 import me.thejokerdev.staffmode.Main;
 import me.thejokerdev.staffmode.enums.SenderTypes;
 import me.thejokerdev.staffmode.type.DataPlayer;
@@ -8,8 +9,6 @@ import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 public class StaffChatSubCMD extends SubCMD {
@@ -37,6 +36,11 @@ public class StaffChatSubCMD extends SubCMD {
     public boolean onCommand(CommandSender sender, String alias, String[] args) {
         Player p = (Player) sender;
         DataPlayer dp = getPlugin().getDataManager().getDataPlayer(p);
+        boolean enabled = getPlugin().getConfigUtil().getConfig().getBoolean("staff-chat.enabled");
+        if (!enabled){
+            XSound.ENTITY_VILLAGER_NO.play(p);
+            return true;
+        }
         if (args.length == 0){
             boolean status = !dp.isInStaffChat();
             String msg = getPlugin().getUtils().getKey("commands.main.staff-chat.msg");

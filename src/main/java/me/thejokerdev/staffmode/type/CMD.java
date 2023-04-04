@@ -50,7 +50,7 @@ public abstract class CMD implements CommandExecutor, TabCompleter {
         args = vector.toArray(new String[0]);
 
         for (SubCMD sub : getSubCMDS()){
-            if (!sub.getName().equalsIgnoreCase(cmd) && (sub.getAliases().size() > 0 && !sub.getAliases().contains(cmd.toLowerCase()))){
+            if (!sub.getName().equalsIgnoreCase(cmd) && !sub.getAliases().contains(cmd.toLowerCase())){
                 continue;
             }
             if (!sub.check(sender)){
@@ -94,7 +94,7 @@ public abstract class CMD implements CommandExecutor, TabCompleter {
             vector.remove(0);
             args = vector.toArray(new String[0]);
             for (SubCMD sub : getSubCMDS()){
-                if (!sub.getName().equalsIgnoreCase(cmd) && (sub.getAliases().size() > 0 && !sub.getAliases().contains(cmd.toLowerCase()))){
+                if (!sub.getName().equalsIgnoreCase(cmd) && !sub.getAliases().contains(cmd.toLowerCase())){
                     continue;
                 }
                 if (!sub.check(sender)){

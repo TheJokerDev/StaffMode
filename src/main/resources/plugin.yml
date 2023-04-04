@@ -1,7 +1,7 @@
 name: StaffMode
 version: '${version}'
 main: me.thejokerdev.staffmode.Main
-api-version: 1.19
+api-version: 1.17
 depend:
   - PlaceholderAPI
   - OpenInv

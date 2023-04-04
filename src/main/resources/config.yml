@@ -3,4 +3,5 @@ settings:
   debug: false
 
 staff-chat:
-  format: '&b[&eSC&b] &e%survicore_color%%player_displayname% &e&l» &f{message}'
+  enabled: false
+  format: '&b[&eSC&b] &f%player_displayname% &e&l» &f{message}'

@@ -34,6 +34,18 @@ public class Placeholders extends PlaceholderExpansion {
                 boolean status = dp.isInStaffChat();
                 return plugin.getUtils().formatMSG(player, "messages.staff-chat."+(status ? "on" : "off"));
             }
+            if (params.equalsIgnoreCase("staffstatus")){
+                boolean status = dp.isInStaff();
+                return plugin.getUtils().formatMSG(player, "messages.staff-mode."+(status ? "on" : "off"));
+            }
+            if (params.equalsIgnoreCase("vanished")){
+                boolean status = dp.isVanished();
+                return status+"";
+            }
+            if (params.equalsIgnoreCase("status")){
+                boolean status = dp.isInStaff();
+                return !status ? "" : plugin.getUtils().formatMSG(player, "messages.staff-tag");
+            }
         }
         return super.onPlaceholderRequest(player, params);
     }

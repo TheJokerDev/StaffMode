@@ -9,6 +9,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.permissions.PermissionAttachment;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -16,11 +17,16 @@ import java.util.UUID;
 public class DataManager implements Listener {
     private Main plugin;
     @Getter private HashMap<UUID, DataPlayer> players;
+    HashMap<UUID, PermissionAttachment> perms = new HashMap<>();
 
     public DataManager(Main plugin){
         this.plugin = plugin;
         plugin.listener(this);
         players = new HashMap<>();
+    }
+
+    public HashMap<UUID, PermissionAttachment> getPerms() {
+        return perms;
     }
 
     public DataPlayer getDataPlayer(Player p){
@@ -34,9 +40,22 @@ public class DataManager implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent e){
-        DataPlayer dp = new DataPlayer(e.getPlayer());
-        players.put(e.getPlayer().getUniqueId(), dp);
-        if (!dp.isInStaff() && e.getPlayer().hasPermission("staffmode.staff")){
+        boolean check = players.get(e.getPlayer().getUniqueId())!=null;
+        DataPlayer dp = getDataPlayer(e.getPlayer());
+        dp.setPlayer(e.getPlayer());
+        if (dp.isInStaff()){
+            dp.setInStaff(false);
+        } else {
+            players.values().forEach(dataPlayer -> {
+                if (dataPlayer.isVanished()){
+                    e.getPlayer().hidePlayer(plugin, dataPlayer.getPlayer());
+                }
+            });
+        }
+        if (!check){
+            players.put(e.getPlayer().getUniqueId(), dp);
+        }
+        if (!dp.isInStaff() && e.getPlayer().hasPermission("staffmode.join.autostaff")){
             dp.setInStaff(true);
         }
     }

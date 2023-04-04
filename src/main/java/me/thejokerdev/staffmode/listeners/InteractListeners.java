@@ -4,14 +4,16 @@ import me.thejokerdev.staffmode.Main;
 import me.thejokerdev.staffmode.type.Button;
 import me.thejokerdev.staffmode.type.DataPlayer;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 public class InteractListeners implements Listener {
     private Main plugin;
@@ -50,6 +52,43 @@ public class InteractListeners implements Listener {
                             preMap.put(b, System.currentTimeMillis());
                             this.time.put(p.getUniqueId(), preMap);
 
+                            for (String s : b.leftClickActions()) {
+                                if (s.startsWith("[invsee]")) {
+                                    s = s.replace("[invsee]", "");
+                                    if (s.contains("block")){
+                                        if (e.getAction() == Action.LEFT_CLICK_BLOCK){
+                                            Block block = e.getClickedBlock();
+                                            if (block == null){
+                                                return;
+                                            }
+                                            if (block.getType() == Material.AIR){
+                                                return;
+                                            }
+                                            List<Material> conteiners = new ArrayList<>();
+                                            conteiners.add(Material.CHEST);
+                                            conteiners.add(Material.TRAPPED_CHEST);
+                                            conteiners.add(Material.DROPPER);
+                                            conteiners.add(Material.HOPPER);
+                                            conteiners.add(Material.DISPENSER);
+                                            conteiners.add(Material.FURNACE);
+                                            conteiners.add(Material.BREWING_STAND);
+                                            conteiners.add(Material.BARREL);
+                                            conteiners.add(Material.BLAST_FURNACE);
+
+                                            if (conteiners.contains(block.getType())){
+                                                try {
+                                                    Inventory inv = ((org.bukkit.block.Container) block.getState()).getInventory();
+                                                    p.openInventory(inv);
+                                                } catch (Exception ex) {
+                                                    plugin.getUtils().sendMSG(p, "&cEl contenedor no tiene inventario.");
+                                                }
+                                            }
+                                            return;
+                                        }
+                                    }
+                                }
+                            }
+
                             b.executePhysicallyItemsActions(e);
                             if (b.canInteract()){
                                 e.setCancelled(false);
@@ -61,6 +100,43 @@ public class InteractListeners implements Listener {
                             plugin.getUtils().sendMSG(p, msg.replace("{time}", String.valueOf((int)(timeleft / 100.0D))));
                         }
                     } else {
+                        for (String s : b.leftClickActions()) {
+                            if (s.startsWith("[invsee]")) {
+                                s = s.replace("[invsee]", "");
+                                if (s.contains("block")){
+                                    if (e.getAction() == Action.LEFT_CLICK_BLOCK){
+                                        Block block = e.getClickedBlock();
+                                        if (block == null){
+                                            return;
+                                        }
+                                        if (block.getType() == Material.AIR){
+                                            return;
+                                        }
+                                        List<Material> conteiners = new ArrayList<>();
+                                        conteiners.add(Material.CHEST);
+                                        conteiners.add(Material.TRAPPED_CHEST);
+                                        conteiners.add(Material.DROPPER);
+                                        conteiners.add(Material.HOPPER);
+                                        conteiners.add(Material.DISPENSER);
+                                        conteiners.add(Material.FURNACE);
+                                        conteiners.add(Material.BREWING_STAND);
+                                        conteiners.add(Material.BARREL);
+                                        conteiners.add(Material.BLAST_FURNACE);
+
+                                        if (conteiners.contains(block.getType())){
+                                            try {
+                                                Inventory inv = ((org.bukkit.block.Container) block.getState()).getInventory();
+                                                p.openInventory(inv);
+                                            } catch (Exception ex) {
+                                                plugin.getUtils().sendMSG(p, "&cEl contenedor no tiene inventario.");
+                                            }
+                                        }
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+
                         b.executePhysicallyItemsActions(e);
                         if (b.canInteract()){
                             e.setCancelled(false);

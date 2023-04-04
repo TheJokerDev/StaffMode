@@ -3,6 +3,7 @@ package me.thejokerdev.staffmode.commands.sub.staffmode;
 import me.thejokerdev.staffmode.Main;
 import me.thejokerdev.staffmode.enums.SenderTypes;
 import me.thejokerdev.staffmode.type.DataPlayer;
+import me.thejokerdev.staffmode.type.Menu;
 import me.thejokerdev.staffmode.type.SubCMD;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -37,8 +38,12 @@ public class FrozeSubCMD extends SubCMD {
 
     @Override
     public boolean onCommand(CommandSender sender, String alias, String[] args) {
-        if (args.length == 0){
-            //Open menu
+        if (args.length == 0 && sender instanceof Player p){
+            getPlugin().getDataManager().getDataPlayer(p).setSelector("froze");
+            Menu menu = getPlugin().getMenusManager().getPlayerMenu(p, "selector");
+            if (menu != null){
+                p.openInventory(menu.getInventory());
+            }
             return true;
         }
         if (args.length == 1){

@@ -1,10 +1,7 @@
 package me.thejokerdev.staffmode.commands;
 
 import me.thejokerdev.staffmode.Main;
-import me.thejokerdev.staffmode.commands.sub.staffmode.FrozeSubCMD;
-import me.thejokerdev.staffmode.commands.sub.staffmode.RandomTPSubCMD;
-import me.thejokerdev.staffmode.commands.sub.staffmode.ReloadSubCMD;
-import me.thejokerdev.staffmode.commands.sub.staffmode.StaffChatSubCMD;
+import me.thejokerdev.staffmode.commands.sub.staffmode.*;
 import me.thejokerdev.staffmode.type.CMD;
 import me.thejokerdev.staffmode.type.DataPlayer;
 import org.bukkit.Sound;
@@ -24,6 +21,8 @@ public class StaffModeCMD extends CMD {
         addSubCMD(new RandomTPSubCMD(plugin));
         addSubCMD(new FrozeSubCMD(plugin));
         addSubCMD(new StaffChatSubCMD(plugin));
+        addSubCMD(new VanishSubCMD(plugin));
+        addSubCMD(new InvseeCMD(plugin));
     }
 
     @Override
@@ -48,7 +47,7 @@ public class StaffModeCMD extends CMD {
 
     @Override
     public List<String> getAliases() {
-        return Arrays.asList("staff", "modostaff");
+        return Arrays.asList("staff", "modostaff", "sm");
     }
 
     @Override
@@ -61,6 +60,12 @@ public class StaffModeCMD extends CMD {
         if (args.length == 0 && sender instanceof Player p){
             DataPlayer dp = getPlugin().getDataManager().getDataPlayer(p);
             boolean status = !dp.isInStaff();
+
+            if (!status && sender.hasPermission("staffmode.staff.deathban")){
+                sendMSG(sender, "{prefix}&cHas muerto recientemente y no puedes salir del modo staff.");
+                return true;
+            }
+
             String msg = getPlugin().getUtils().getKey("commands.main.toggle.msg");
             String activated = getPlugin().getUtils().getKey("commands.main.toggle.activate");
             String deactivated = getPlugin().getUtils().getKey("commands.main.toggle.deactivate");

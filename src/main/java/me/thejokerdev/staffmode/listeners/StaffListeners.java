@@ -3,7 +3,6 @@ package me.thejokerdev.staffmode.listeners;
 import me.thejokerdev.staffmode.Main;
 import me.thejokerdev.staffmode.type.Button;
 import me.thejokerdev.staffmode.type.DataPlayer;
-import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -19,8 +18,6 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +33,7 @@ public class StaffListeners implements Listener {
     public void onInteract(PlayerInteractEvent e){
         Player p = e.getPlayer();
         DataPlayer dp = plugin.getDataManager().getDataPlayer(p);
-        if (dp.isInStaff()  || dp.isFrozen()){
+        if ((dp.isInStaff() || dp.isFrozen()) && !dp.isVanished()){
             e.setCancelled(true);
         }
     }
@@ -195,6 +192,9 @@ public class StaffListeners implements Listener {
         if (dp.isInStaff()) {
             p.setAllowFlight(true);
             p.setFlying(true);
+            if (dp.isVanished()){
+                dp.setVanished(true);
+            }
         }
     }
 
@@ -230,7 +230,7 @@ public class StaffListeners implements Listener {
     public void blockPlace(BlockPlaceEvent e){
         Player p = e.getPlayer();
         DataPlayer dp = plugin.getDataManager().getDataPlayer(p);
-        if (dp.isInStaff() || dp.isFrozen()){
+        if ((dp.isInStaff() || dp.isFrozen()) && !dp.isVanished()){
             e.setCancelled(true);
         }
     }
@@ -239,7 +239,7 @@ public class StaffListeners implements Listener {
     public void blockBreak(BlockBreakEvent e){
         Player p = e.getPlayer();
         DataPlayer dp = plugin.getDataManager().getDataPlayer(p);
-        if (dp.isInStaff() || dp.isFrozen()){
+        if ((dp.isInStaff() || dp.isFrozen()) && !dp.isVanished()){
             e.setCancelled(true);
         }
     }
@@ -247,6 +247,9 @@ public class StaffListeners implements Listener {
     @EventHandler
     public void onDamage(EntityDamageEvent e){
         if (e.getEntity() instanceof Player p){
+            if (p.getPlayer() == null){
+                return;
+            }
             DataPlayer dp = plugin.getDataManager().getDataPlayer(p);
             if (dp==null){
                 return;

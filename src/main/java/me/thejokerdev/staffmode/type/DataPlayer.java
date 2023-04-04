@@ -3,25 +3,29 @@ package me.thejokerdev.staffmode.type;
 import com.cryptomorin.xseries.XMaterial;
 import lombok.Getter;
 import lombok.Setter;
+import me.thejokerdev.staffmode.menus.PlayerSelector;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import me.thejokerdev.staffmode.Main;
+import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
 @Getter
 public class DataPlayer {
     private final Main plugin = Main.getPlugin();
-    private Player player;
+    @Setter private Player player;
     private String name;
     private UUID uuid;
     @Setter private HashMap<String, Button> items = new HashMap<>();
 
     //Staff utils
     private boolean inStaff = false;
+    private boolean isVanished = false;
     @Setter private boolean inStaffChat = false;
     private ItemStack[] storage;
     private Collection<PotionEffect> potionEffects;
@@ -33,6 +37,9 @@ public class DataPlayer {
     private GameMode gameMode;
     private ItemStack helmet;
     private List<String> teleported = new ArrayList<>();
+    private List<String> permissions = new ArrayList<>();
+
+    @Setter @Getter private String selector = null;
 
     private boolean isFrozen = false;
     @Setter private boolean frozeCheck = false;
@@ -63,13 +70,14 @@ public class DataPlayer {
 
     public void setInStaff(boolean inStaff) {
         Player p = getPlayer();
-        plugin.getServer().dispatchCommand(p, "co i");
+        plugin.getServer().dispatchCommand(p, "co i "+(inStaff ? "on" : "off"));
         if (inStaff) {
-            if (!inStaffChat) {
+            if (!inStaffChat && plugin.getConfigUtil().getConfig().getBoolean("staff-chat.enabled")) {
                 inStaffChat = true;
             }
             storage = p.getInventory().getContents();
             p.getInventory().clear();
+            p.removePotionEffect(PotionEffectType.INVISIBILITY);
             potionEffects = p.getActivePotionEffects();
             potionEffects.forEach(potionEffect -> p.removePotionEffect(potionEffect.getType()));
             health = p.getHealth();
@@ -82,17 +90,27 @@ public class DataPlayer {
             p.setExp(0);
             fly = p.getAllowFlight();
             gameMode = p.getGameMode();
-            p.setGameMode(GameMode.SURVIVAL);
+            p.setGameMode(GameMode.CREATIVE);
             p.setAllowFlight(true);
             p.setFlying(true);
             p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0, true, false));
-            if (items.size() > 0){
-                for (Button b : items.values()) {
-                    for (Integer i : b.getSlot()) {
-                        p.getInventory().setItem(i, b.getItem().build(p));
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (items.size() > 0){
+                        for (Button b : items.values()) {
+                            if (!b.canView()){
+                                continue;
+                            }
+                            for (Integer i : b.getSlot()) {
+                                p.getInventory().setItem(i, b.getItem().build(p));
+                            }
+                        }
                     }
                 }
-            }
+            }.runTaskLaterAsynchronously(plugin, 10L);
+            applyPerms();
+            setVanished(true);
         } else {
             p.getInventory().setContents(storage);
             storage = null;
@@ -111,15 +129,53 @@ public class DataPlayer {
             fly = false;
             p.setGameMode(gameMode);
             gameMode = null;
+            removePerms();
+            setVanished(false);
         }
-        plugin.getServer().dispatchCommand(p, "v "+(inStaff ? "on" : "off"));
-        String cmd = inStaff ? "set tab.staff true" : "unset tab.staff";
-        plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "lp user "+p.getUniqueId()+" permission "+cmd);
-        cmd = inStaff ? "set worldedit.navigation.jumpto.tool true" : "unset worldedit.navigation.jumpto.tool";
-        plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "lp user "+p.getUniqueId()+" permission "+cmd);
-        cmd = inStaff ? "set worldedit.navigation.thru.tool true" : "unset worldedit.navigation.thru.tool";
-        plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "lp user "+p.getUniqueId()+" permission "+cmd);
+        permissions.add("tab.staff");
+        permissions.add("worldedit.navigation.jumpto.tool");
+        permissions.add("worldedit.navigation.thru.tool");
         this.inStaff = inStaff;
+    }
+
+    public void setVanished(boolean vanished) {
+        isVanished = vanished;
+        if (vanished){
+            plugin.getServer().getOnlinePlayers().forEach(player -> {
+                if (player.hasPermission("staffmode.staff")){
+                    player.showPlayer(plugin, getPlayer());
+                } else {
+                    player.hidePlayer(plugin, getPlayer());
+                }
+            });
+        } else {
+            plugin.getServer().getOnlinePlayers().forEach(player -> {
+                if (!player.canSee(getPlayer())){
+                    player.showPlayer(plugin, getPlayer());
+                }
+            });
+        }
+    }
+
+    public void applyPerms(){
+        if (!plugin.getDataManager().getPerms().containsKey(getUuid())){
+            PermissionAttachment attachment = getPlayer().addAttachment(plugin);
+            plugin.getDataManager().getPerms().put(getUuid(), attachment);
+        }
+        PermissionAttachment attachment = plugin.getDataManager().getPerms().get(getUuid());
+        for (String perm : permissions){
+            attachment.setPermission(perm, true);
+        }
+    }
+
+    public void removePerms(){
+        if (!plugin.getDataManager().getPerms().containsKey(getUuid())){
+            return;
+        }
+        PermissionAttachment attachment = plugin.getDataManager().getPerms().get(getUuid());
+        for (String perm : permissions){
+            attachment.unsetPermission(perm);
+        }
     }
 
     public DataPlayer(String name){
@@ -141,6 +197,9 @@ public class DataPlayer {
     }
 
     public void loadItems(){
+        if (getPlayer() == null){
+            return;
+        }
         boolean replace = false;
         List<String> replacing = new ArrayList<>();
         if (items.size() > 0){
@@ -164,6 +223,6 @@ public class DataPlayer {
                 }
             }
         }
-
+        new PlayerSelector(plugin, getPlayer());
     }
 }

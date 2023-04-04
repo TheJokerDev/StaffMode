@@ -12,6 +12,9 @@ invsee:
       &7
       &f Clic derecho en un jugador para
       &f abrir su inventario.
+      &f
+      &f Clic derecho en un contenedor para
+      &f ver su contenido.
       &7
       &f Clic izquierdo para seleccionar
       &f jugador.
@@ -21,21 +24,28 @@ invsee:
       - '[cmd]staff invsee'
     rightclick:
       - '[invsee][cmd=OP]openinv {clicked}'
+      - '[invsee]block'
     multiclick:
       - '[sound]UI_BUTTON_CLICK,1.0,2.0'
 rtp:
   material: ENDER_EYE
   slot: 0
-  cooldown: 2
+  cooldown: 1
   meta:
     name: '&eTeleport aleatorio'
     lore: |-
       &7
-      &f Solo cliquea y
-      &f disfruta el viaje.
+      &f Clic derecho para ir a un
+      &f jugador aleatorio.
+      &7
+      &f Clic izquierdo para seleccionar
+      &f un jugador e ir donde él.
       &7
   actions:
-    multiclick:
+    leftclick:
+      - '[cmd]staff rtp menu'
+      - '[sound]UI_BUTTON_CLICK,1.0,2.0'
+    rightclick:
       - '[sound]ENTITY_ENDERMAN_TELEPORT,1.0,2.0'
       - '[cmd]staff rtp'
 vanish-on:
@@ -45,8 +55,8 @@ vanish-on:
   requirements:
     '1':
       type: STRING
-      syntax: '%essentials_vanished%'
-      value: 'yes'
+      syntax: '%staffmode_vanished%'
+      value: 'true'
   meta:
     name: '&eDesactivar invisibilidad'
     lore: |-
@@ -57,7 +67,7 @@ vanish-on:
   actions:
     multiclick:
       - '[sound]ENTITY_ENDERMAN_TELEPORT,1.0,2.0'
-      - '[cmd=OP]v off'
+      - '[cmd]staff vanish'
       - '[return]'
 vanish-off:
   material: gray_candle
@@ -66,8 +76,8 @@ vanish-off:
   requirements:
     '1':
       type: STRING
-      syntax: '%essentials_vanished%'
-      value: 'no'
+      syntax: '%staffmode_vanished%'
+      value: 'false'
   meta:
     name: '&eActivar invisibilidad'
     lore: |-
@@ -78,8 +88,7 @@ vanish-off:
   actions:
     multiclick:
       - '[sound]ENTITY_ENDERMAN_TELEPORT,1.0,2.0'
-      - '[cmd=OP]v on'
-      - '[action]removepot invisibility'
+      - '[cmd]staff vanish'
       - '[return]'
 froze:
   material: PACKED_ICE
@@ -89,7 +98,7 @@ froze:
     lore: |-
       &7
       &f Clic derecho en un jugador para
-      &f congelarlo su inventario.
+      &f congelarlo.
       &7
       &f Clic izquierdo para seleccionar
       &f jugador.
@@ -101,17 +110,24 @@ froze:
       - '[froze][cmd]staff froze {clicked}'
     multiclick:
       - '[sound]UI_BUTTON_CLICK,1.0,2.0'
-staffchat:
-  material: PAPER
-  slot: 6
+alternator:
+  material: diamond
+  slot: 4
   meta:
-    name: '&eChat de staff'
+    name: '&7(Izquierdo) &bCreativo &7| &bEspectador &7(Derecho)'
     lore: |-
       &7
-      &f Clic para alternar tu
-      &f estado del chat de staff.
+      &f Clic izquierdo para ponerte
+      &f en gamemode creativo.
+      &7
+      &f Clic derecho para ponerte
+      &f en gamemode espectador.
       &7
   actions:
+    leftclick:
+      - '[action]creative'
+      - '[action]fly on'
+    rightclick:
+      - '[action]spectator'
     multiclick:
-      - '[cmd]staff chat'
       - '[sound]UI_BUTTON_CLICK,1.0,2.0'

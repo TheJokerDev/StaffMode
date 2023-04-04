@@ -233,7 +233,7 @@ public class Button {
                     player.getPlayer().updateInventory();
                 }
             }
-        }.runTaskLater(Main.getPlugin(), 5L
+        }.runTaskLater(Main.getPlugin(), 1L
         );
         return bol;
     }

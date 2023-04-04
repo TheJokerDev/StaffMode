@@ -36,7 +36,7 @@ dependencies {
     compileOnly 'me.clip:placeholderapi:2.10.9'
 }
 
-def targetJavaVersion = 17
+def targetJavaVersion = 16
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion
